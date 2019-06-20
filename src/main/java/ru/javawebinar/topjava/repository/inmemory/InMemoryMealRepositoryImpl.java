@@ -7,7 +7,10 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -25,20 +28,20 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         Map<Integer, Meal> mealMap = repository.get(userId);
-        if (mealMap == null) {
-            mealMap = new ConcurrentHashMap<>();
-            repository.put(userId, mealMap);
-        }
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             meal.setUserId(userId);
-
+            if (mealMap == null) {
+                mealMap = new ConcurrentHashMap<>();
+            }
             mealMap.put(meal.getId(), meal);
+            repository.put(userId, mealMap);
             return meal;
         }
 
         // treat case: update, but absent in storage
-        return mealMap.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return mealMap != null ?
+                mealMap.computeIfPresent(meal.getId(), (id, oldMeal) -> meal) : null;
     }
 
     @Override
@@ -55,23 +58,20 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        Map<Integer, Meal> mealMap = repository.get(userId);
-        return (mealMap != null) ?
-                getSorted(mealMap.values(), meal -> true) : Collections.<Meal>emptyList();
-
+        return getSorted(userId, meal -> true);
     }
 
     @Override
     public List<Meal> getAllBetweenDay(int userId, LocalDate startDay, LocalDate endDay) {
-        Map<Integer, Meal> mealMap = repository.get(userId);
-        return (mealMap != null) ?
-                getSorted(mealMap.values(), meal -> DateTimeUtil.isBetween(meal.getDate(), startDay, endDay)) : Collections.<Meal>emptyList();
+        return getSorted(userId, meal -> DateTimeUtil.isBetween(meal.getDate(), startDay, endDay));
     }
 
-    private static List<Meal> getSorted(Collection<Meal> meals, Predicate<Meal> filter) {
-        return meals.stream()
+    private List<Meal> getSorted(int userId, Predicate<Meal> filter) {
+        Map<Integer, Meal> mealMap = repository.get(userId);
+        return mealMap != null ? mealMap.values()
+                .stream()
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : Collections.<Meal>emptyList();
     }
 }
