@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.User;
@@ -14,6 +15,7 @@ import static ru.javawebinar.topjava.UserTestData.USER;
 
 
 @Repository
+@Primary
 public class InMemoryUserRepository extends InMemoryBaseRepository<User> implements UserRepository {
 
     static final int USER_ID = 1;
