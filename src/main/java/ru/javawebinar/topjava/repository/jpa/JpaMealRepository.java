@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,14 +30,18 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            if (meal.getUser() == null) {
+            Query query = em.createQuery("UPDATE Meal u SET u.description=?1, u.calories=?2, u.dateTime=?3 " +
+                    " WHERE u.id=?4 AND u.user.id=?5");
+            query.setParameter(1, meal.getDescription())
+                    .setParameter(2, meal.getCalories())
+                    .setParameter(3, meal.getDateTime())
+                    .setParameter(4, meal.getId())
+                    .setParameter(5, userId);
+            if (query.executeUpdate() == 0) {
                 return null;
             }
-            if (meal.getUser().getId().equals(userId)) {
-                return em.merge(meal);
-            }
         }
-        return null;
+        return meal;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        Query query = em.createQuery("SELECT m  FROM Meal m WHERE m.user.id =:userId AND m.id=:id");
+        TypedQuery<Meal> query = em.createNamedQuery(Meal.ONE, Meal.class);
         List<Meal> meals = query.setParameter("id", id)
                 .setParameter("userId", userId)
                 .getResultList();

@@ -12,15 +12,17 @@ import java.time.LocalTime;
 
 
 @NamedQueries({
+        @NamedQuery(name = Meal.ONE, query = "SELECT m  FROM Meal m WHERE m.user.id =:userId AND m.id=:id"),
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.BETWEEN, query = "SELECT m FROM Meal m WHERE m.user.id=?1 AND m.dateTime >= ?2 AND m.dateTime <=?3 ORDER BY m.dateTime DESC")
 
 })
 @Entity
-@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"date_time", "user_id"}, name = "meals_unique_user_datetime_idx")})
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
 public class Meal extends AbstractBaseEntity {
 
     public static final String BETWEEN = "Meal.delete";
+    public static final String ONE = "Meal.one";
     public static final String ALL_SORTED = "Meal.getAllSorted";
 
 
@@ -34,11 +36,11 @@ public class Meal extends AbstractBaseEntity {
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotNull
     @Range(min = 10, max = 10000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
