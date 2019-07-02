@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 
 @NamedQueries({
-        @NamedQuery(name = Meal.ONE, query = "SELECT m  FROM Meal m WHERE m.user.id =:userId AND m.id=:id"),
+        @NamedQuery(name = Meal.ONE, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id =:userId"),
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.BETWEEN, query = "SELECT m FROM Meal m WHERE m.user.id=?1 AND m.dateTime >= ?2 AND m.dateTime <=?3 ORDER BY m.dateTime DESC")
 

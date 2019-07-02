@@ -33,10 +33,8 @@ public class MealServiceTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Rule
-    public StopWatchImpl stopWatch = new StopWatchImpl();
-
     @ClassRule
-    public static StopWatchImpl stopWatchStatic = new StopWatchImpl();
+    public static StopWatchImpl stopWatch = new StopWatchImpl();
 
     @Autowired
     private MealService service;
