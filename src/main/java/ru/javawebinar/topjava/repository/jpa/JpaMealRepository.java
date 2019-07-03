@@ -19,7 +19,6 @@ public class JpaMealRepository implements MealRepository {
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
@@ -28,8 +27,7 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            Meal updated = em.find(Meal.class, meal.getId());
-            if (updated.getUser().getId().equals(userId)) {
+            if (get(meal.getId(), userId) != null) {
                 meal.setUser(em.getReference(User.class, userId));
                 return em.merge(meal);
             }
