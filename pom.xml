@@ -57,9 +57,6 @@
                 <version>2.22.1</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
-                    <excludes>
-                        <exclude>%regex[.*(DataJpa|Jdbc).*]</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
