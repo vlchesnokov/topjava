@@ -11,7 +11,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.Date;
 
-public class AbstractJpaDataJpaUserServiceTest extends AbstractUserServiceTest {
+public abstract class AbstractJpaDataJpaUserServiceTest extends AbstractUserServiceTest {
 
 
     @Autowired
