@@ -6,6 +6,15 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <bean class="ru.javawebinar.topjava.web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
+    <bean id="conversionService"
+          class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="ru.javawebinar.topjava.web.converter.StringToLocalDate"/>
+                <bean class="ru.javawebinar.topjava.web.converter.StringToLocalTime"/>
+            </set>
+        </property>
+    </bean>
 
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -17,6 +26,7 @@
                     <list>
                         <value>text/plain;charset=UTF-8</value>
                         <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
                     </list>
                 </property>
             </bean>

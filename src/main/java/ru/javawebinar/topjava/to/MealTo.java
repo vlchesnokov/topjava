@@ -3,15 +3,15 @@ package ru.javawebinar.topjava.to;
 import java.time.LocalDateTime;
 
 public class MealTo {
-    private  Integer id;
+    private Integer id;
 
-    private  LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
-    private  String description;
+    private String description;
 
-    private  int calories;
+    private int calories;
 
-    private  boolean excess;
+    private boolean excess;
 
     public MealTo() {
     }
@@ -64,11 +64,8 @@ public class MealTo {
             return false;
         }
         MealTo that = (MealTo) o;
-        return id != null && id.equals(that.id)
-                && dateTime != null && dateTime.equals(that.dateTime)
-                && description != null && description.equals(that.description)
-                && calories == that.calories
-                && excess == that.excess;
+        return id.equals(that.id) && dateTime.equals(that.dateTime) && description.equals(that.description)
+                && (calories == that.calories) && (excess == that.excess);
     }
 
     @Override

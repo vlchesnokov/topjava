@@ -204,3 +204,27 @@ Java Enterprise Online Project
 -  <a href="http://www.bookvoed.ru/book?id=639284">Редмонд Э.: Семь баз данных за семь недель. Введение в современные базы данных и идеологию NoSQL</a>
 -  <a href="http://www.ozon.ru/context/detail/id/3174887/">Brian Goetz: Java Concurrency in Practice</a>
 -  <a href="http://bookvoed.ru/book?id=2593572">G.L. McDowell: Cracking the Coding Interview</a>
+
+#### Запросы curl для MealRestController
+- Get all meals: 
+
+      curl "http://localhost:8080/topjava/rest/meals"
+      
+- Get meal with id = 100005:
+ 
+      curl "http://localhost:8080/topjava/rest/meals/100005"
+      
+- Delete meal with id = 100005: 
+
+       curl -X DELETE "http://localHost:8080/topjava/rest/meals/100005"
+
+- Create new meal: 
+       
+      curl -d '{"dateTime":"2015-05-31T12:41:00","description":"Торт","calories":600}' -H "Content-Type: application/json" -X POST http://localHost:8080/topjava/rest/meals
+- Update meal with id = 100002: 
+      
+      curl -d '{"dateTime":"2014-05-31T15:00:00","description":"Обновленная еда","calories":500}' -H "Content-Type: application/json" -X PUT http://localHost:8080/topjava/rest/meals/100002
+
+- Get meal between dates: 
+
+      curl -d "startDateStr=2011-12-03&startTimeStr=00:00:30&endDateStr=2020-12-03&endTimeStr=23:30:30" -X POST http://localHost:8080/topjava/rest/meals/filter
