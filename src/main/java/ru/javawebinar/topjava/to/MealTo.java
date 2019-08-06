@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.to;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class MealTo {
     private Integer id;
@@ -57,15 +58,14 @@ public class MealTo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || !getClass().equals(o.getClass())) {
-            return false;
-        }
-        MealTo that = (MealTo) o;
-        return id.equals(that.id) && dateTime.equals(that.dateTime) && description.equals(that.description)
-                && (calories == that.calories) && (excess == that.excess);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MealTo mealTo = (MealTo) o;
+        return calories == mealTo.calories &&
+                excess == mealTo.excess &&
+                Objects.equals(id, mealTo.id) &&
+                Objects.equals(dateTime, mealTo.dateTime) &&
+                Objects.equals(description, mealTo.description);
     }
 
     @Override

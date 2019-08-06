@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @RestController
@@ -62,14 +63,11 @@ public class MealRestController extends AbstractMealController {
     }
 
     @PostMapping("/filter")
-    public List<MealTo> getBetween(@RequestParam String startDateStr,
-                                   @RequestParam String startTimeStr,
-                                   @RequestParam String endDateStr,
-                                   @RequestParam String endTimeStr) {
-        LocalDate startDate = conversionService.convert(startDateStr, LocalDate.class);
-        LocalTime startTime = conversionService.convert(startTimeStr, LocalTime.class);
-        LocalDate endDate = conversionService.convert(endDateStr, LocalDate.class);
-        LocalTime endTime = conversionService.convert(endTimeStr, LocalTime.class);
+    public List<MealTo> getBetween(@RequestParam(required = false) LocalDate startDate,
+                                   @RequestParam(required = false) LocalTime startTime,
+                                   @RequestParam(required = false) LocalDate endDate,
+                                   @RequestParam(required = false) LocalTime endTime) {
+
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 }

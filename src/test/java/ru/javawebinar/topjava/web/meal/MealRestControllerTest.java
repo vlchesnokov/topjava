@@ -80,10 +80,10 @@ class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void testGetBetween() throws Exception {
         mockMvc.perform(post(REST_URL + "filter")
-                .param("startDateStr", "2011-12-03")
-                .param("startTimeStr", "00:00:30")
-                .param("endDateStr", "2020-12-03")
-                .param("endTimeStr", "23:30:30")
+                .param("startDate", "2011-12-03")
+                .param("startTime", "00:00:30")
+                .param("endDate", "2020-12-03")
+                .param("endTime", "23:30:30")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(contentJson((getWithExcess(MEALS, authUserCaloriesPerDay()))));
