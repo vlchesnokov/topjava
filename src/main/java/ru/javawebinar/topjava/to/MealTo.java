@@ -1,10 +1,17 @@
 package ru.javawebinar.topjava.to;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonView;
+import ru.javawebinar.topjava.View;
+import ru.javawebinar.topjava.util.DateTimeUtil;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class MealTo extends BaseTo {
 
+    @JsonView(View.JsonREST.class)
     private LocalDateTime dateTime;
 
     private String description;
@@ -56,6 +63,13 @@ public class MealTo extends BaseTo {
     public int hashCode() {
         return Objects.hash(id, dateTime, description, calories, excess);
 }
+
+    @JsonGetter
+    @JsonView(View.JsonUI.class)
+    @JsonFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    public LocalDateTime getDateTimeUI() {
+        return dateTime;
+    }
 
     @Override
     public String toString() {
